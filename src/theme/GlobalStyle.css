@@ -1,0 +1,104 @@
+@font-face {
+  font-family: "R3bbitPixelFont";
+  src: url("../../public/fonts/R3bbitPixelFont.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*
+---------------------
+  Theme Variables
+---------------------
+Light Mode:
+Background: #E0E0E0
+Primary Text: #121212
+Secondary Text: #888888
+Border/Dividers: #444444
+Accent: #B0B0B0
+
+Dark Mode:
+Background: #121212
+Primary Text: #E0E0E0
+Secondary Text: #B0B0B0
+Borders/Dividers: #444444
+Accent: #888888
+*/
+:root{
+  --bg: #E0E0E0;
+  --text: #121212;
+  --text-2: #888888;
+  --border: #444444;
+  --accent: #b0b0b0;
+
+  --underline: var(--text-2)
+}
+
+html[data-theme="dark"]{
+  --bg: #121212;
+  --text: #e0e0e0;
+  --text-2: #b0b0b0;
+  --border: #e0e0e0;
+  --accent: #888888;
+  
+  --underline: var(--text-2);
+}
+
+/*
+---------------------
+  Global Styles
+---------------------
+*/
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1,h2,h3,h4,ul,ol,p {
+  margin: 5px 0px 0px 0px;
+}
+
+h1,h2,h3,body {
+  color: var(--text);
+  font-family: "Raleway", sans-serif;
+  margin-top: 20px;
+}
+
+h1{
+  font-weight: 800;
+}
+
+h2{
+  font-weight: 700;
+}
+
+h3{
+  font-weight: 600;
+}
+
+h4{
+  font-weight: 500;
+}
+
+body{
+  margin: 0;
+  background-color: var(--bg);
+  font-weight: 400;
+}
+
+/* 
+---------------------
+  Animations
+---------------------
+*/
+html.theme-transition, html.theme-transition * {
+  transition:
+    background-color 250ms linear,
+    color 250ms linear,
+    border-color 250ms linear,
+    fill 250ms linear,
+    stroke 250ms linear;
+}
