@@ -4,29 +4,32 @@ export default function Home() {
   const age = CalculateAge(new Date(2003, 11, 8));
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 20,
-          marginTop: 15,
-        }}>
+      {/*
+        --------------------
+        MARK: About
+        --------------------
+        */}
+      <div id="about" className="hero-space">
         <div className="content about-me-texts">
-          <h1 style={{ fontSize: 50 }}>Hi there, I&apos;m Khai Xuen. </h1>
-          <p style={{ marginTop: 5, fontSize: 20 }}>
+          <h1 className="about-me-title">Hi there, I&apos;m Khai Xuen. </h1>
+          <p className="about-me-content">
             I am a {age} year old programmer that&apos;s currently pursuing my
             Diploma in Immersive Media &amp; Game Development at Temasek
             Polytechnic in Singapore. I describe myself as a problem solver that
             seeks opportunities to learn new things, at the same time,
             constantly improving my skills. I enjoy creating games that feel
-            great to play, with clean code that is easy to read. Want to know
-            more, you can reach me on any of my social media.
+            great to play, with clean code that is easy to read.
           </p>
         </div>
         <img src="me.png" alt="A Photo of Khai Xuen" className="profile-img" />
       </div>
 
-      <div>
+      {/*
+        --------------------
+        MARK: Projects
+        --------------------
+        */}
+      <div id="projects">
         <h2>Projects</h2>
         <div className="project-row-container">
           <div className="project-content">
@@ -93,7 +96,8 @@ export default function Home() {
               <a
                 href="https://xd.adobe.com/view/613e7653-efa6-4715-90f4-ef5140a2245c-346d/?fullscreen"
                 target="_blank"
-                rel="noopener noreferrer">
+                rel="noopener noreferrer"
+              >
                 MAPP — A HIFI for a Music player
               </a>
             </h3>
@@ -104,7 +108,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="project-row-container">
+        <div className="project-row-container empty-content-container">
           <div className="project-content">
             <div className="video-wrapper">
               <iframe
@@ -121,17 +125,29 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="project-content" />
+          <div className="project-content empty-content" />
         </div>
       </div>
-      <div>
+
+      {/*
+        --------------------
+        MARK: Education
+        --------------------
+        */}
+      <div id="education">
         <h2>Education</h2>
         <div className="education-box">
           <h3 style={{ marginTop: 0 }}>Temasek Polytechnic (2022 - 2025)</h3>
           <h4>Diploma in Immersive Media & Game Development</h4>
         </div>
       </div>
-      <div>
+
+      {/*
+        --------------------
+        MARK: Skills
+        --------------------
+        */}
+      <div id="skills">
         <h2>Skills</h2>
         <div className="content">
           <h3 style={{ marginTop: 5 }}>Coding Language</h3>
@@ -160,17 +176,31 @@ export default function Home() {
           </ul>
         </div>
       </div>
-
+      {/*
+        --------------------
+        MARK: Style
+        --------------------
+        */}
       <style jsx>{`
+        /* MARK: General Styling */
         .content {
           margin-left: 5px;
         }
 
+        /* MARK: Hero Space Styling */
+        .hero-space {
+          display: flex;
+          align-items: center;
+          gap: 20;
+          min-height: 100vh;
+        }
+
+        /* MARK: About Me Styling */
         .profile-img {
           flex: 1;
           width: 100%;
-          border-radius: 5%; /* make it round */
-          object-fit: cover; /* crop nicely */
+          border-radius: 5%;
+          object-fit: cover;
           border: 2px solid var(--border);
         }
 
@@ -179,10 +209,24 @@ export default function Home() {
           margin-right: 5px;
         }
 
+        .about-me-title {
+          font-size: 50;
+        }
+
+        .about-me-content {
+          margin-top: 5;
+          font-size: 20;
+        }
+
+        /* MARK: Project Styling */
         .project-row-container {
           display: flex;
           flex-wrap: wrap;
           gap: 20px;
+        }
+
+        .empty-content-container {
+          gap: 0px;
         }
 
         .project-content {
@@ -205,6 +249,7 @@ export default function Home() {
           border: none;
         }
 
+        /*  MARK: Education Styling */
         .education-box {
           background: var(--accent);
           border: 1px solid var(--border);
@@ -215,6 +260,7 @@ export default function Home() {
           max-width: 500px;
         }
 
+        /* MARK: Skills styling */
         .skills-card {
           display: flex;
           flex-wrap: wrap;
@@ -232,11 +278,31 @@ export default function Home() {
           border-radius: 25px;
           border: 2px solid var(--border);
         }
+
+        @media screen and (max-width: 1010px) {
+          .hero-space {
+            flex-direction: column;
+          }
+
+          .project-row-container {
+            flex-direction: column;
+          }
+
+          .empty-content {
+            margin: 0;
+            padding: 0;
+          }
+        }
       `}</style>
     </div>
   );
 }
 
+/*
+--------------------
+MARK: Helper
+--------------------
+*/
 // Helper function to calculate age
 function CalculateAge(dob: Date) {
   const today = new Date();

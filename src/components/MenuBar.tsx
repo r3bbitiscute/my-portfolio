@@ -1,12 +1,21 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function MenuBar() {
-  const pathName = usePathname();
+  /*
+  --------------------
+  MARK: State
+  --------------------
+  */
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeId, setActiveId] = useState<string>("about");
 
-  // Theme for the website
+  /*
+  --------------------
+  MARK: Theme
+  --------------------
+  */
   const [theme, setTheme] = useState<
     "light" | "dark" | "game-light" | "game-dark"
   >();
@@ -17,8 +26,8 @@ export default function MenuBar() {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 640 640"
       width={24}
-      height={24}>
-      {/* Font Awesome Free v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc. */}
+      height={24}
+    >
       <path
         fill="var(--text)"
         d="M210.2 53.9C217.6 50.8 226 51.7 232.7 56.1L320.5 114.3L408.3 56.1C415 51.7 423.4 50.9 430.8 53.9C438.2 56.9 443.4 63.5 445 71.3L465.9 174.5L569.1 195.4C576.9 197 583.5 202.4 586.5 209.7C589.5 217 588.7 225.5 584.3 232.2L526.1 320L584.3 407.8C588.7 414.5 589.5 422.9 586.5 430.3C583.5 437.7 576.9 443.1 569.1 444.6L465.8 465.4L445 568.7C443.4 576.5 438 583.1 430.7 586.1C423.4 589.1 414.9 588.3 408.2 583.9L320.4 525.7L232.6 583.9C225.9 588.3 217.5 589.1 210.1 586.1C202.7 583.1 197.3 576.5 195.8 568.7L175 465.4L71.7 444.5C63.9 442.9 57.3 437.5 54.3 430.2C51.3 422.9 52.1 414.4 56.5 407.7L114.7 320L56.5 232.2C52.1 225.5 51.3 217.1 54.3 209.7C57.3 202.3 63.9 196.9 71.7 195.4L175 174.6L195.9 71.3C197.5 63.5 202.9 56.9 210.2 53.9zM239.6 320C239.6 275.6 275.6 239.6 320 239.6C364.4 239.6 400.4 275.6 400.4 320C400.4 364.4 364.4 400.4 320 400.4C275.6 400.4 239.6 364.4 239.6 320zM448.4 320C448.4 249.1 390.9 191.6 320 191.6C249.1 191.6 191.6 249.1 191.6 320C191.6 390.9 249.1 448.4 320 448.4C390.9 448.4 448.4 390.9 448.4 320z"
@@ -32,8 +41,8 @@ export default function MenuBar() {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 640 640"
       width={24}
-      height={24}>
-      {/* Font Awesome Free v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc. */}
+      height={24}
+    >
       <path
         fill="var(--text)"
         d="M320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576C388.8 576 451.3 548.8 497.3 504.6C504.6 497.6 506.7 486.7 502.6 477.5C498.5 468.3 488.9 462.6 478.8 463.4C473.9 463.8 469 464 464 464C362.4 464 280 381.6 280 280C280 207.9 321.5 145.4 382.1 115.2C391.2 110.7 396.4 100.9 395.2 90.8C394 80.7 386.6 72.5 376.7 70.3C358.4 66.2 339.4 64 320 64z"
@@ -41,23 +50,41 @@ export default function MenuBar() {
     </svg>
   );
 
-  // Menu Bar List Item
-  const menuItems = [
-    { name: "About", id: "about" },
-    { name: "Projects", id: "project" },
-  ];
-
+  // Get initial theme from <html data-theme="...">
   useEffect(() => {
-    // Retrieve the theme value from layout.tsx
     const currentTheme = document.documentElement.getAttribute("data-theme") as
       | "light"
-      | "dark";
-    setTheme(currentTheme);
+      | "dark"
+      | null;
+
+    if (currentTheme) {
+      setTheme(currentTheme);
+    } else {
+      setTheme("light");
+    }
   }, []);
 
-  /**
-   * Toggle the theme of the page
-   */
+  /*
+  --------------------
+  MARK: Theme transition
+  --------------------
+  */
+  function runThemeTransition(applyTheme: () => void) {
+    const root = document.documentElement;
+    const DURATION = 250;
+
+    root.classList.add("theme-transition");
+    // force reflow
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    root.offsetHeight;
+
+    applyTheme();
+
+    window.setTimeout(() => {
+      root.classList.remove("theme-transition");
+    }, DURATION);
+  }
+
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
 
@@ -68,127 +95,295 @@ export default function MenuBar() {
     });
   };
 
-  /**
-   * Run a tiny cross-fade when changing theme.
-   * Ensures the class is applied BEFORE we flip the data-theme.
-   */
-  function runThemeTransition(applyTheme: () => void) {
-    const root = document.documentElement;
-    const DURATION = 250;
+  /*
+  --------------------
+  MARK: Menu
+  --------------------
+  */
+  const menuItems = [
+    { name: "About", id: "about" },
+    { name: "Projects", id: "projects" },
+    { name: "Education", id: "education" },
+    { name: "Skills", id: "skills" },
+  ];
 
-    // Add the class to enable transitions
-    root.classList.add("theme-transition");
+  // MARK: Scroll spy (auto-detect active section on scroll)
+  useEffect(() => {
+    // get DOM elements for each section
+    const sections = menuItems
+      .map((item) => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
 
-    // Force a layout so the class "sticks" before we change colors
-    // (this avoids the no-animation flash)
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    root.offsetHeight;
+    if (sections.length === 0) return;
 
-    // Apply the theme change
-    applyTheme();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // pick the most visible section
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
 
-    // Remove the class after transitions finish (use a timer that matches CSS)
-    window.setTimeout(() => {
-      root.classList.remove("theme-transition");
-    }, DURATION);
-  }
+        if (visible && visible.target.id) {
+          setActiveId(visible.target.id);
+        }
+      },
+      {
+        root: null,
+        threshold: 0.5,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  /*
+  --------------------
+  MARK: Menu Animation
+  --------------------
+  */
+  // Scroll animation
+  useEffect(() => {
+    let lastScroll = 0;
+
+    function handleScroll() {
+      const current = window.scrollY;
+
+      if (current > lastScroll) {
+        // scrolling down - hide the header
+        document.querySelector("header")?.classList.add("hide-header");
+      } else {
+        // scrolling up - show the header
+        document.querySelector("header")?.classList.remove("hide-header");
+      }
+
+      lastScroll = current;
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="menu-background">
-      <h1 className="menu-title">CHONG KHAI XUEN</h1>
-      <div className="menu-list-container">
-        {/* Menu Bar */}
-        <ul className="menu-list">
-          {menuItems.map((page) => (
-            <li
-              key={page.id}
-              className={
-                pathName == page.id ? "menu-item active" : "menu-item"
-              }></li>
-          ))}
-          {/* Theme Toggle Button */}
-          <li>
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="theme-button menu-item">
-              {theme === "dark" ? SunIcon : MoonIcon}
-            </button>
-          </li>
-        </ul>
+      <div className="mobile-menu-bar">
+        <h1 className="menu-title">CHONG KHAI XUEN</h1>
+
+        {/*
+        --------------------
+        MARK: Burger Menu
+        --------------------
+        */}
+        <button
+          className={`burger-button ${isOpen ? "open" : ""}`}
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label="Toggle menu"
+        >
+          <span className="burger-line" />
+          <span className="burger-line" />
+          <span className="burger-line" />
+        </button>
       </div>
 
-      <style jsx>
-        {`
+      {/*
+      --------------------
+      MARK: Navigation List
+      --------------------
+      */}
+      <ul className={`menu-list ${isOpen ? "open" : ""}`}>
+        {menuItems.map((page) => (
+          <li
+            key={page.id}
+            className={`menu-item ${activeId === page.id ? "active" : ""}`}
+            onClick={() => {
+              const section = document.getElementById(page.id);
+              if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+              }
+              setIsOpen(false); // close burger menu on mobile
+            }}
+          >
+            <h3>{page.name}</h3>
+          </li>
+        ))}
+
+        {/*
+        --------------------
+        MARK: Theme Toggle Button
+        --------------------
+        */}
+        <li>
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="theme-button menu-item"
+            style={{ justifyContent: "center", alignItems: "center" }}
+          >
+            {theme === "dark" ? SunIcon : MoonIcon}
+          </button>
+        </li>
+      </ul>
+
+      {/*
+      --------------------
+      MARK: Style
+      --------------------
+      */}
+      <style jsx>{`
+        .menu-background {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: var(--bg);
+          padding: 16px 10vw 8px 10vw;
+        }
+
+        .mobile-menu-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+        }
+
+        .menu-title {
+          font-size: clamp(1rem, calc(3vw + 0.5rem), 4rem);
+          margin: 0px;
+        }
+
+        .menu-list {
+          display: flex;
+          list-style: none;
+          gap: 24px;
+          margin: 0px;
+        }
+
+        .menu-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+        }
+
+        .menu-item h3 {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-decoration: none;
+          font-size: 16px;
+          margin: 0;
+          position: relative; /* needed for ::after underline */
+        }
+
+        /* Theme Button Styling */
+        .theme-button {
+          background-color: var(--bg);
+          color: var(--text);
+          padding: 10px;
+          border: 2px solid var(--accent);
+          border-radius: 25px;
+          height: 51px;
+          width: 51px;
+        }
+
+        /* Burger Menu Styling */
+        .burger-button {
+          opacity: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background-color: transparent;
+          border-color: transparent;
+        }
+
+        .burger-line {
+          height: 3px;
+          width: 24px;
+          background-color: var(--text);
+          border-radius: 3px;
+          margin-bottom: 5px;
+          transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        /* When burger is open, turn lines into an X */
+        .burger-button.open .burger-line:nth-child(1) {
+          transform: translateY(8px) rotate(-45deg);
+        }
+
+        .burger-button.open .burger-line:nth-child(2) {
+          opacity: 0;
+        }
+
+        .burger-button.open .burger-line:nth-child(3) {
+          transform: translateY(-8px) rotate(45deg);
+        }
+
+        /* Active menu item */
+        .menu-item.active h3 {
+          color: var(--text-2);
+        }
+
+        .menu-item.active h3::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -4px;
+          width: 100%;
+          height: 2px;
+          background: var(--text-2);
+        }
+
+        /* Hover underline animation */
+        .menu-item:hover h3::after {
+          width: 100%;
+        }
+
+        .menu-item h3::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -4px;
+          width: 0%;
+          height: 2px;
+          background: var(--bg);
+          transition: width 250ms ease;
+        }
+
+        /* Mobile */
+        @media screen and (max-width: 1010px) {
           .menu-background {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--bg);
+            flex-direction: column;
+            align-items: flex-start;
           }
 
-          .menu-title {
-            font-size: 40px;
-            margin: 0px;
+          .burger-button {
+            opacity: 1;
+            display: flex;
           }
 
           .menu-list {
             display: flex;
-            list-style: none;
-            gap: 30px;
-            margin: 0px;
+            flex-direction: column;
+            width: 100%;
+            gap: 16px;
+            margin-top: 12px;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s linear;
+          }
+
+          .menu-list.open {
+            max-height: 300px;
           }
 
           .menu-item {
-            cursor: pointer;
+            justify-content: flex-start;
           }
-
-          .menu-item h3 {
-            position: relative;
-            text-decoration: none;
-            font-size: 16px;
-          }
-
-          .theme-button {
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 10px;
-            border: 2px solid var(--accent);
-            border-radius: 25px;
-          }
-
-          /* Style for chosen menu item*/
-          .menu-item.active h3 {
-            color: var(--text-2);
-          }
-
-          .menu-item.active h3::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -4px;
-            width: 100%;
-            height: 2px;
-            background: var(--text-2);
-          }
-
-          /* Animation for hovered menu item */
-          .menu-item:hover h3::after {
-            width: 100%;
-          }
-
-          .menu-item h3::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -4px;
-            width: 0%;
-            height: 2px;
-            background: var(--bg);
-            transition: width 250ms ease;
-          }
-        `}
-      </style>
+        }
+      `}</style>
     </div>
   );
 }

@@ -10,17 +10,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/*This script runs before the page is displayed, 
-        so the correct theme is applied instantly (avoiding a "flash" of the wrong theme).
-        
-        1. Try to load the saved theme from localStorage ('dark' or 'light').
-        2. If nothing is saved, check the system setting using 
-        window.matchMedia('(prefers-color-scheme: dark)').matches.
-        - true  => system prefers dark mode
-        - false => system prefers light mode
-        3. Decide which theme to use: either the saved one, or the system preference.
-        4. Apply it by setting <html data-theme="...">,
-        which makes our CSS variables switch to the correct colors.
+        {/*
+          MARK: Initial Theme Setup
+          - Load saved theme.
+          - If none, follow system preference.
+          - Apply theme before render.
         */}
         <script
           dangerouslySetInnerHTML={{
@@ -45,10 +39,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body
-        style={{
-          padding: "20px 200px 20px 200px",
-        }}>
+      <body className="body-layout">
         <header>
           <MenuBar />
         </header>
