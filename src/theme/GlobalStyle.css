@@ -1,46 +1,26 @@
-@font-face {
-  font-family: "R3bbitPixelFont";
-  src: url("../../public/fonts/R3bbitPixelFont.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
+/*
+--------------------
+MARK: Imports
+--------------------
+*/
+@import "tailwindcss";
 
 /*
 --------------------
-MARK: Theme Variables
+MARK: Theme
 --------------------
-Light Mode:
-Background: #E0E0E0
-Primary Text: #121212
-Secondary Text: #888888
-Border/Dividers: #444444
-Accent: #B0B0B0
-
-Dark Mode:
-Background: #121212
-Primary Text: #E0E0E0
-Secondary Text: #B0B0B0
-Borders/Dividers: #444444
-Accent: #888888
 */
-:root {
-  --bg: #e0e0e0;
-  --text: #121212;
-  --text-2: #888888;
-  --border: #444444;
-  --accent: #b0b0b0;
+@theme {
+  --color-primary: var(--text);
+  --color-secondary: var(--text-sec);
 
-  --underline: var(--text-2);
-}
+  --color-bg: var(--bg);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-underline: var(--underline);
 
-html[data-theme="dark"] {
-  --bg: #121212;
-  --text: #e0e0e0;
-  --text-2: #b0b0b0;
-  --border: #e0e0e0;
-  --accent: #888888;
-
-  --underline: var(--text-2);
+  --font-pixel: "R3bbitPixelFont", sans-serif;
+  --font-raleway: "Raleway", sans-serif;
 }
 
 /*
@@ -48,71 +28,71 @@ html[data-theme="dark"] {
 MARK: Global Styles
 --------------------
 */
-main {
-  padding: 2em 10vw;
+@layer base {
+  @font-face {
+    font-family: "R3bbitPixelFont";
+    src: url("/public/fonts/R3bbitPixelFont.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  :root {
+    --bg: #e0e0e0;
+    --text: #121212;
+    --text-sec: #888888;
+    --border: #444444;
+    --accent: #b0b0b0;
+
+    --underline: var(--text-2);
+  }
+
+  html[data-theme="dark"] {
+    --bg: #121212;
+    --text: #e0e0e0;
+    --text-sec: #b0b0b0;
+    --border: #e0e0e0;
+    --accent: #888888;
+
+    --underline: var(--text-2);
+  }
+
+  body {
+    margin: 0;
+    @apply bg-bg text-primary font-raleway font-normal;
+  }
+
+  main {
+    @apply py-[3em] lg:py-[2em] px-[10vw];
+  }
+
+  header {
+    @apply fixed top-0 left-0 w-full z-999 transition-transform duration-250 ease-in-out;
+  }
+
+  a {
+    @apply no-underline text-inherit hover:underline;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply mt-5 font-raleway text-primary;
+  }
+
+  h1 {
+    @apply font-extrabold;
+  }
+  h2 {
+    @apply font-bold;
+  }
+  h3 {
+    @apply font-semibold;
+  }
 }
 
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999;
-  transition: transform 0.25s ease;
-}
-
-header.hide-header {
-  transform: translateY(-100%);
-}
-
-body {
-  margin: 0;
-  background-color: var(--bg);
-  font-weight: 400;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-h1,
-h2,
-h3,
-h4,
-ul,
-ol,
-p {
-  margin: 5px 0px 0px 0px;
-}
-
-h1,
-h2,
-h3,
-body {
-  color: var(--text);
-  font-family: "Raleway", sans-serif;
-  margin-top: 20px;
-}
-
-h1 {
-  font-weight: 800;
-}
-
-h2 {
-  font-weight: 700;
-}
-
-h3 {
-  font-weight: 600;
-}
-
-h4 {
-  font-weight: 500;
+.hide-header {
+  @apply -translate-y-full;
 }
 
 /*

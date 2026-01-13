@@ -25,8 +25,7 @@ export default function MenuBar() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 640 640"
-      width={24}
-      height={24}
+      className="w-6 h-6"
     >
       <path
         fill="var(--text)"
@@ -40,8 +39,7 @@ export default function MenuBar() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 640 640"
-      width={24}
-      height={24}
+      className="w-6 h-6"
     >
       <path
         fill="var(--text)"
@@ -103,7 +101,7 @@ export default function MenuBar() {
   const menuItems = [
     { name: "About", id: "about" },
     { name: "Projects", id: "projects" },
-    { name: "Education", id: "education" },
+    { name: "Education & Career", id: "education" },
     { name: "Skills", id: "skills" },
   ];
 
@@ -168,24 +166,51 @@ export default function MenuBar() {
   }, []);
 
   return (
-    <div className="menu-background">
-      <div className="mobile-menu-bar">
-        <h1 className="menu-title">CHONG KHAI XUEN</h1>
+    <nav className="flex flex-col lg:flex-row lg:justify-between lg:items-center bg-(--bg) px-[10vw] py-2">
+      {/* Header Bar */}
+      <div className="flex flex-1 justify-between items-center w-half">
+        <h1 className="text-[clamp(1rem,3vw+0.5rem,4rem)] m-0">
+          CHONG KHAI XUEN
+        </h1>
+        <div className="flex items-center lg:gap-[.5vw] gap-[4vw]">
+          {/*
+        --------------------
+        MARK: Theme Toggle Button
+        --------------------
+        */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="flex bg-(--bg) text-(--text) p-2.5 border-solid border-(--text) border-2 rounded-3xl h-12.75 w-12.75 items-center justify-center cursor-pointer"
+            style={{ justifyContent: "center", alignItems: "center" }}
+          >
+            {theme === "dark" ? SunIcon : MoonIcon}
+          </button>
 
-        {/*
+          {/*
         --------------------
         MARK: Burger Menu
         --------------------
         */}
-        <button
-          className={`burger-button ${isOpen ? "open" : ""}`}
-          onClick={() => setIsOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          <span className="burger-line" />
-          <span className="burger-line" />
-          <span className="burger-line" />
-        </button>
+          <button
+            className={`lg:opacity-0 lg:pointer-events-none opacity-100 flex flex-col items-center bg-transparent border-transparent transition-opacity duration-300 ${
+              isOpen ? "open" : ""
+            }`}
+            onClick={() => setIsOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className={`h-0.75 w-6 bg-(--text) rounded-full transition-all duration-300 ease-in-out ${
+                  i !== 2 ? "mb-1.25" : ""
+                } ${isOpen && i === 0 ? "translate-y-2 -rotate-45" : ""} ${
+                  isOpen && i === 1 ? "opacity-0" : ""
+                } ${isOpen && i === 2 ? "-translate-y-2 rotate-45" : ""}`}
+              />
+            ))}
+          </button>
+        </div>
       </div>
 
       {/*
@@ -193,11 +218,19 @@ export default function MenuBar() {
       MARK: Navigation List
       --------------------
       */}
-      <ul className={`menu-list ${isOpen ? "open" : ""}`}>
+      <ul
+        className={`flex flex-col lg:flex-row list-none gap-6 lg:gap-[1.5vw] m-0 p-0 
+        overflow-hidden transition-all duration-300 ease-in-out w-auto
+        ${
+          isOpen
+            ? "max-h-80 mt-4 opacity-100"
+            : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+        }`}
+      >
         {menuItems.map((page) => (
           <li
             key={page.id}
-            className={`menu-item ${activeId === page.id ? "active" : ""}`}
+            className={`group relative flex lg:justify-center justify-start items-center cursor-pointer `}
             onClick={() => {
               const section = document.getElementById(page.id);
               if (section) {
@@ -206,184 +239,21 @@ export default function MenuBar() {
               setIsOpen(false); // close burger menu on mobile
             }}
           >
-            <h3>{page.name}</h3>
+            <h3
+              className={`flex justify-center items-center no-underline text-4 m-0 relative ${
+                activeId === page.id ? "text-(--text-sec)" : ""
+              }`}
+            >
+              {page.name}
+            </h3>
+            <span
+              className={`absolute bottom-0 left-0 h-0.5 bg-(--text-sec) transition-all duration-250 ease ${
+                activeId === page.id ? "w-full" : "w-0 group-hover:w-full"
+              }`}
+            />
           </li>
         ))}
-
-        {/*
-        --------------------
-        MARK: Theme Toggle Button
-        --------------------
-        */}
-        <li>
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="theme-button menu-item"
-            style={{ justifyContent: "center", alignItems: "center" }}
-          >
-            {theme === "dark" ? SunIcon : MoonIcon}
-          </button>
-        </li>
       </ul>
-
-      {/*
-      --------------------
-      MARK: Style
-      --------------------
-      */}
-      <style jsx>{`
-        .menu-background {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          background-color: var(--bg);
-          padding: 16px 10vw 8px 10vw;
-        }
-
-        .mobile-menu-bar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 100%;
-        }
-
-        .menu-title {
-          font-size: clamp(1rem, calc(3vw + 0.5rem), 4rem);
-          margin: 0px;
-        }
-
-        .menu-list {
-          display: flex;
-          list-style: none;
-          gap: 24px;
-          margin: 0px;
-        }
-
-        .menu-item {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-        }
-
-        .menu-item h3 {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          font-size: 16px;
-          margin: 0;
-          position: relative; /* needed for ::after underline */
-        }
-
-        /* Theme Button Styling */
-        .theme-button {
-          background-color: var(--bg);
-          color: var(--text);
-          padding: 10px;
-          border: 2px solid var(--accent);
-          border-radius: 25px;
-          height: 51px;
-          width: 51px;
-        }
-
-        /* Burger Menu Styling */
-        .burger-button {
-          opacity: 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          background-color: transparent;
-          border-color: transparent;
-        }
-
-        .burger-line {
-          height: 3px;
-          width: 24px;
-          background-color: var(--text);
-          border-radius: 3px;
-          margin-bottom: 5px;
-          transition: transform 0.25s ease, opacity 0.25s ease;
-        }
-
-        /* When burger is open, turn lines into an X */
-        .burger-button.open .burger-line:nth-child(1) {
-          transform: translateY(8px) rotate(-45deg);
-        }
-
-        .burger-button.open .burger-line:nth-child(2) {
-          opacity: 0;
-        }
-
-        .burger-button.open .burger-line:nth-child(3) {
-          transform: translateY(-8px) rotate(45deg);
-        }
-
-        /* Active menu item */
-        .menu-item.active h3 {
-          color: var(--text-2);
-        }
-
-        .menu-item.active h3::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -4px;
-          width: 100%;
-          height: 2px;
-          background: var(--text-2);
-        }
-
-        /* Hover underline animation */
-        .menu-item:hover h3::after {
-          width: 100%;
-        }
-
-        .menu-item h3::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -4px;
-          width: 0%;
-          height: 2px;
-          background: var(--bg);
-          transition: width 250ms ease;
-        }
-
-        /* Mobile */
-        @media screen and (max-width: 1010px) {
-          .menu-background {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-
-          .burger-button {
-            opacity: 1;
-            display: flex;
-          }
-
-          .menu-list {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            gap: 16px;
-            margin-top: 12px;
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.25s linear;
-          }
-
-          .menu-list.open {
-            max-height: 300px;
-          }
-
-          .menu-item {
-            justify-content: flex-start;
-          }
-        }
-      `}</style>
-    </div>
+    </nav>
   );
 }

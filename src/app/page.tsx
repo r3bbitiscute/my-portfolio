@@ -9,10 +9,13 @@ export default function Home() {
         MARK: About
         --------------------
         */}
-      <div id="about" className="hero-space">
-        <div className="content about-me-texts">
-          <h1 className="about-me-title">Hi there, I&apos;m Khai Xuen. </h1>
-          <p className="about-me-content">
+      <div
+        id="about"
+        className="flex items-center gap-4 min-h-screen flex-col lg:flex-row"
+      >
+        <div className="content lg:flex-3 mr-[1.25]">
+          <h1 className="text-5xl">Hi there, I&apos;m Khai Xuen. </h1>
+          <p className="mt-5 text-xl">
             I am a {age} year old programmer that&apos;s currently pursuing my
             Diploma in Immersive Media &amp; Game Development at Temasek
             Polytechnic in Singapore. I describe myself as a problem solver that
@@ -21,7 +24,11 @@ export default function Home() {
             great to play, with clean code that is easy to read.
           </p>
         </div>
-        <img src="me.png" alt="A Photo of Khai Xuen" className="profile-img" />
+        <img
+          src="me.png"
+          alt="A Photo of Khai Xuen"
+          className="flex-1 h-[75vh] rounded-[5%] object-cover border-solid border-2 border---border)"
+        />
       </div>
 
       {/*
@@ -134,11 +141,17 @@ export default function Home() {
         MARK: Education
         --------------------
         */}
-      <div id="education">
-        <h2>Education</h2>
-        <div className="education-box">
-          <h3 style={{ marginTop: 0 }}>Temasek Polytechnic (2022 - 2025)</h3>
-          <h4>Diploma in Immersive Media & Game Development</h4>
+      <div id="education" className="relative my-5 mx-0">
+        <h2 className="my-2">Education & Career</h2>
+        <div className="relative before:content-[''] before:absolute before:left-1/2 before:w-0.5 before:h-full before:bg-(--border)">
+          <div className="education-box">
+            <h3 style={{ marginTop: 0 }}>Temasek Polytechnic (2022 - 2026)</h3>
+            <h4>Diploma in Immersive Media & Game Development</h4>
+          </div>
+          <div className="education-box">
+            <h3 style={{ marginTop: 0 }}>SLEEP APNEA PTE LTD (2025 - 2026)</h3>
+            <h4>IT Intern</h4>
+          </div>
         </div>
       </div>
 
@@ -150,29 +163,40 @@ export default function Home() {
       <div id="skills">
         <h2>Skills</h2>
         <div className="content">
-          <h3 style={{ marginTop: 5 }}>Coding Language</h3>
-          <ul className="skills-card">
-            <li>C#</li>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>Vue.js</li>
-            <li>React Native</li>
-            <li>TypeScript/JavaScript</li>
-            <li>MySQL</li>
-            <li>PHP</li>
-            <li>Python</li>
-          </ul>
-
-          <h3>Engines/Tools</h3>
+          <h3 style={{ marginTop: 5 }}>Game Development</h3>
           <ul className="skills-card">
             <li>Unity</li>
+            <li>C#</li>
+            <li>Blender</li>
+            <li>Maya</li>
+          </ul>
+
+          <h3>Web/App Development</h3>
+          <ul className="skills-card">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>TypeScript/JavaScript</li>
+            <li>Vue.js</li>
+            <li>React Native</li>
+            <li>Tailwind CSS</li>
+            <li>Axios</li>
+            <li>MongoDB</li>
+            <li>MySQL</li>
+            <li>PHP</li>
+          </ul>
+
+          <h3>Software/Scripting</h3>
+          <ul className="skills-card">
+            <li>Python (Data Processing & Tooling)</li>
+          </ul>
+
+          <h3>Design & Workflow</h3>
+          <ul className="skills-card">
+            <li>Git</li>
+            <li>Aseprite</li>
             <li>Adobe Photoshop</li>
             <li>Figma</li>
             <li>Adobe XD</li>
-            <li>Blender</li>
-            <li>Maya</li>
-            <li>Git</li>
-            <li>Aseprite</li>
           </ul>
         </div>
       </div>
@@ -185,37 +209,6 @@ export default function Home() {
         /* MARK: General Styling */
         .content {
           margin-left: 5px;
-        }
-
-        /* MARK: Hero Space Styling */
-        .hero-space {
-          display: flex;
-          align-items: center;
-          gap: 20;
-          min-height: 100vh;
-        }
-
-        /* MARK: About Me Styling */
-        .profile-img {
-          flex: 1;
-          width: 100%;
-          border-radius: 5%;
-          object-fit: cover;
-          border: 2px solid var(--border);
-        }
-
-        .about-me-texts {
-          flex: 3;
-          margin-right: 5px;
-        }
-
-        .about-me-title {
-          font-size: 50;
-        }
-
-        .about-me-content {
-          margin-top: 5;
-          font-size: 20;
         }
 
         /* MARK: Project Styling */
@@ -237,6 +230,7 @@ export default function Home() {
         .project-title {
           margin: 0;
         }
+
         .video-wrapper {
           width: 100%;
           aspect-ratio: 16/9;
@@ -251,13 +245,65 @@ export default function Home() {
 
         /*  MARK: Education Styling */
         .education-box {
-          background: var(--accent);
-          border: 1px solid var(--border);
-          border-radius: 5px;
-          padding: 25px;
-          margin-top: 5px;
+          width: fit-content;
+          max-width: 45%;
+          position: relative;
+          border-radius: 10px;
+          border: 3px solid var(--border);
+          padding: 20px;
+          margin-top: 16px;
+        }
 
-          max-width: 500px;
+        .education-box:nth-child(odd) {
+          margin-left: 50%;
+          left: 20px;
+        }
+
+        .education-box:nth-child(even) {
+          margin-left: auto;
+          margin-right: 50%;
+          right: 20px;
+          text-align: right;
+        }
+
+        /* Horizontal Connector Line */
+        .education-box::before {
+          content: "";
+          position: absolute;
+          top: 30px; /* Align with the center of your first line of text */
+          width: 20px; /* This matches the 'left: 20px' or 'right: 20px' you set earlier */
+          height: 2px;
+          background: var(--border);
+        }
+
+        /* Position for boxes on the right */
+        .education-box:nth-child(odd)::before {
+          left: -20px;
+        }
+
+        /* Position for boxes on the left */
+        .education-box:nth-child(even)::before {
+          right: -20px;
+        }
+
+        /* The Dot on the Vertical Line */
+        .education-box::after {
+          content: "";
+          position: absolute;
+          top: 26px; /* (top of connector) - (half of dot height) */
+          width: 10px;
+          height: 10px;
+          background: var(--border); /* Or a different color to make it pop */
+          border-radius: 50%;
+          z-index: 1;
+        }
+
+        .education-box:nth-child(odd)::after {
+          left: -27px;
+        }
+
+        .education-box:nth-child(even)::after {
+          right: -29px;
         }
 
         /* MARK: Skills styling */
@@ -280,10 +326,6 @@ export default function Home() {
         }
 
         @media screen and (max-width: 1010px) {
-          .hero-space {
-            flex-direction: column;
-          }
-
           .project-row-container {
             flex-direction: column;
           }
