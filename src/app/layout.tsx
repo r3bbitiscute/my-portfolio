@@ -1,4 +1,4 @@
-import "../theme/GlobalStyle.css";
+import "../theme/main.css";
 import MenuBar from "@/components/MenuBar";
 import Footer from "@/components/Footer";
 
@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/*
           MARK: Initial Theme Setup
@@ -20,7 +20,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function () {
-                var saved = localStorage.getItem('theme'); // 'dark' | 'light' | null
+                var saved = localStorage.getItem('theme');
                 var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 var theme = saved || (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);

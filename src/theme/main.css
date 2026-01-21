@@ -1,0 +1,129 @@
+/*
+--------------------
+MARK: Imports
+--------------------
+*/
+@import "tailwindcss";
+
+/*
+--------------------
+MARK: Theme
+--------------------
+*/
+@theme {
+  --font-pixel: "R3bbitPixelFont", sans-serif;
+  --font-raleway: "Raleway", sans-serif;
+
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --border: var(--border);
+  --info: var(--info);
+
+  --hsl-dark: var(--hsl-dark);
+  --hsl-normal: var(--hsl-normal);
+  --hsl-light: var(--hsl-light);
+}
+
+/*
+--------------------
+MARK: Global Styles
+--------------------
+*/
+@layer base {
+  @font-face {
+    font-style: normal;
+    font-weight: normal;
+    src: url("/public/fonts/R3bbitPixelFont.ttf") format("truetype");
+    font-family: "R3bbitPixelFont";
+  }
+
+  :root {
+    --bg-dark: hsl(0, 0%, 100%);
+    --bg: hsl(0, 0%, 95%);
+    --bg-light: hsl(0, 0%, 90%);
+    --text: hsl(0, 0%, 5%);
+    --text-muted: hsl(0, 0%, 30%);
+    --danger: hsl(10 37% 65%);
+    --warning: hsl(55 26% 54%);
+    --success: hsl(150 24% 57%);
+    --border: var(--hsl-normal);
+    --info: var(--hsl-normal);
+
+    --hsl-dark: hsl(180 100% 15%);
+    --hsl-normal: hsl(180 100% 25%);
+    --hsl-light: hsl(180 100% 35%);
+  }
+
+  html[data-theme="dark"] {
+    --bg-dark: hsl(0, 0%, 0%);
+    --bg: hsl(0, 0%, 5%);
+    --bg-light: hsl(0, 0%, 10%);
+    --text: hsl(0, 0%, 95%);
+    --text-muted: hsl(0, 0%, 70%);
+
+    --border: var(--hsl-light);
+    --info: var(--hsl-light);
+  }
+
+  body {
+    margin: 0;
+    @apply bg-bg text-text font-raleway font-normal;
+  }
+
+  main {
+    @apply px-[10vw] py-[3em] lg:py-[2em];
+  }
+
+  header {
+    @apply fixed top-0 left-0 z-999 w-full transition-transform duration-250 ease-in-out;
+  }
+
+  a {
+    @apply text-inherit no-underline hover:underline;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-raleway mt-5;
+  }
+
+  h1 {
+    @apply font-extrabold;
+  }
+  h2 {
+    @apply font-bold;
+  }
+  h3 {
+    @apply font-semibold;
+  }
+
+  h4 {
+    @apply font-medium;
+  }
+
+  h5,
+  p {
+    @apply font-normal;
+  }
+}
+
+.hide-header {
+  @apply -translate-y-full;
+}
+
+/*
+--------------------
+MARK: Animations
+--------------------
+*/
+html.theme-transition,
+html.theme-transition * {
+  transition:
+    background-color 250ms linear,
+    color 250ms linear,
+    border-color 250ms linear,
+    fill 250ms linear,
+    stroke 250ms linear;
+}
