@@ -496,6 +496,12 @@ export default function Home() {
         }
 
         @media screen and (max-width: 1010px) {
+          /*
+          --------------------
+          MARK: Mobile Project Styling
+          --------------------
+          */
+
           .project-row-container {
             flex-direction: column;
           }
@@ -503,6 +509,35 @@ export default function Home() {
           .empty-content {
             margin: 0;
             padding: 0;
+          }
+
+          /*
+          --------------------
+          MARK: Mobile Education Styling
+          --------------------
+          */
+          .education-box {
+            max-width: 100%;
+          }
+
+          .education-box:nth-child(odd) {
+            left: 0;
+            margin-left: 0;
+          }
+
+          .education-box:nth-child(even) {
+            right: 0;
+            margin-right: 0;
+          }
+
+          /* Horizontal Connector Line */
+          .education-box::before {
+            display: none;
+          }
+
+          /* The Icon */
+          .education-box::after {
+            display: none;
           }
 
           .summarised-achievement {
