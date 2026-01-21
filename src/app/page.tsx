@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 
 export default function Home() {
   const age = CalculateAge(new Date(2003, 11, 8));
@@ -25,7 +24,7 @@ export default function Home() {
             games that feel great to play, with clean code that is easy to read.
           </p>
         </div>
-        <Image
+        <img
           src="me.png"
           alt="A Photo of Khai Xuen"
           className="h-[75vh] flex-1 rounded-[5%] border-2 border-solid border-(--border) object-cover"
